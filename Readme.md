@@ -18,6 +18,10 @@ for gourish admin
 gourishadmin@gmail.com
 gourish12
 
+new Admin--
+"email":"librarywala2@gmail.com",
+"password":"12345678"
+
 user Credentials
 
 username: 'Testit',
@@ -62,5 +66,3 @@ jsonData :{
 LoginAdmin Creditionals
 email:AdminHarsh@gmail.com,
 password:Harsh123
-
- 

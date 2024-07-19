@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import studyMain from "../assets/images/studyMain.png";
 import reading from "../assets/images/reading 1.png";
@@ -60,22 +59,27 @@ const Auth = ({ type }: { type: "signin" }) => {
   async function sendRequest() {
     if (type === "signin") {
       try {
-        const response = await axios.post(`${BASEURL}/api/v1/auth/signin`, {
-          // username: userInfo.name,
-          email: userInfo.email,
-          // phoneNumber: userInfo?.phone,
-          password: userInfo.password,
-      
-        });
+        // const response = await axios.post(`${BASEURL}/api/v1/auth/signin`, {
+        const response = await axios.post(
+          `${BASEURL}/api/v1/admin/loginAdmin`,
+          {
+            // username: userInfo.name,
+            email: userInfo.email,
+            // phoneNumber: userInfo?.phone,
+            password: userInfo.password,
+            accountType: "Admin",
+          }
+        );
 
         if (response.data.success) {
           console.log(response.data);
           console.log(response.data.token);
           const token = response.data.token;
           const accountType = response.data.data.user.accountType;
+          // const accountType = "Admin";
 
           localStorage.setItem("token", token);
-          localStorage.setItem("userId", response.data.data.user._id);
+          // localStorage.setItem("userId", response.data.data.user._id);
           localStorage.setItem("role", accountType);
           const role = await localStorage.getItem("role");
 
@@ -143,7 +147,7 @@ const Auth = ({ type }: { type: "signin" }) => {
             Hello! Let's get started
           </h6>
           <div className="px-20">
-          {/* <div className="flex justify-start gap-2 items-center mb-4">
+            {/* <div className="flex justify-start gap-2 items-center mb-4">
               <p className="p-2 border rounded-lg">+91</p>
               <input
                 type="number"
@@ -162,7 +166,7 @@ const Auth = ({ type }: { type: "signin" }) => {
                 className="border rounded-lg p-3 h-10 w-12"
               />
             </div> */}
-               {/* <div className="flex justify-start border border-black bg-white">
+            {/* <div className="flex justify-start border border-black bg-white">
         <label
           className=" w-24  py-2  text-black  h-[50px] justify-center items-center
         text-center border border-gray-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer rounded-full "
