@@ -39,10 +39,10 @@ const CreateRoom: React.FC = () => {
   }, []);
 
   const [timeSlots, setTimeSlots] = useState([
-    { from: null, to: null },
-    { from: null, to: null },
-    { from: null, to: null },
-    { from: null, to: null },
+    { from: null, to: null, price: 0 },
+    { from: null, to: null, price: 0 },
+    { from: null, to: null, price: 0 },
+    { from: null, to: null, price: 0 },
   ]);
   const handleLocationSelect = (location: any) => {
     console.log("Selected Location:", location);
@@ -65,6 +65,10 @@ const CreateRoom: React.FC = () => {
 
   const handleLibraryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLibraryId(event.target.value);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
   };
 
   useEffect(() => {
@@ -122,11 +126,24 @@ const CreateRoom: React.FC = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  function handlePriceChange(index, newValue) {
+    // Assuming timeSlots is part of your component's state
+    // and you have a method to update this state
+    const updatedTimeSlots = [...timeSlots];
+    updatedTimeSlots[index].price = newValue;
+    setTimeSlots(updatedTimeSlots); // Update your state with the new timeSlots array
+  }
+
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
   const handleSubmit = async () => {
     try {
-      // if(!libraryId){
-      //   toast.error("Please relogin, NO library Exists")
-      // }
+      if(!libraryId){
+        toast.error("Please relogin, NO library Exists")
+      }
+
 
       await createRoom();
 
@@ -136,19 +153,22 @@ const CreateRoom: React.FC = () => {
       // Handle error
     }
   };
-  // const handleRoomChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setSelectedRoom(event.target.value);
-  // };
+
+
   React.useEffect(() => {
     const timer = setTimeout(() => setProgress(66), 500);
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
+<<<<<<< HEAD
     return <Progress value={progress} className="w-[60%]" />;
+=======
+    return <Progress value={progress} className="w-[60%]" />
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
   }
   return (
-    <div className="flex flex-col bg-gray-100 items-center  gap-y-15 overflow-y-scroll h-screen mb-20">
+    <div className="flex flex-col bg-gray-100 items-center  gap-y-25 overflow-y-scroll h-screen mb-20">
       <div className="mt-20 ">
         <select value={libraryId} onChange={handleLibraryChange}>
           <option value="">Select a Library</option>
@@ -156,7 +176,7 @@ const CreateRoom: React.FC = () => {
             <option
               key={library._id}
               value={library._id}
-              className="bg-gray-500 p-2 rounded-lg mt-2 mb-5 rounded-xl p-10"
+              className="bg-gray-500  rounded-lg mt-2 mb-5  p-10"
             >
               {library.name}
             </option>
@@ -164,25 +184,16 @@ const CreateRoom: React.FC = () => {
         </select>
         {/* Other form elements */}
       </div>
-      <div className="mt-20  h-32">
-        {/* <div>
-          <div className="mt-20">
-            <select value={selectedRoom} onChange={handleRoomChange}>
-              <option value="">Select a Room (Default 1)</option>
-              {selectedRoom?.map((room: any) => (
-                <option key={room._id} value={room._id}>
-                  {room.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div> */}
+
+      <div className="mt-20  h-96">
+
         <Seats onSeatSelect={handleSeatSelect} />
       </div>
 
       <div className="w-[90%] mx-20 mt-60">
         <h2 className="text-center">Select Time Slots</h2>
         {timeSlots.map((timeRange, index) => (
+<<<<<<< HEAD
           <div
             key={index}
             className="flex justify-evenly items-center bg-gray-200 p-2 rounded-lg mt-2 mb-5 rounded-xl"
@@ -201,6 +212,35 @@ const CreateRoom: React.FC = () => {
                 handleTimeChange(index, "to", newValue)
               }
             />
+=======
+          <div className="flex-col  justify-center items-center">
+            <div
+              key={index}
+              className="flex justify-evenly items-center bg-gray-200 p-2 mt-2 mb-5 rounded-xl"
+            >
+
+              <TimePicker
+                label="From"
+                value={timeRange.from}
+                onChange={(newValue) => handleTimeChange(index, "from", newValue)}
+              />
+              <TimePicker
+                label="To"
+                value={timeRange.to}
+                onChange={(newValue) => handleTimeChange(index, "to", newValue)}
+              />
+            </div>
+            <div className="max-w-[30%] flex  flex-col  justify-center items-cente">
+
+            <input
+              type="number"
+              className="form-input rounded-md ml-60"
+              value={timeRange.price}
+              onChange={(e) => handlePriceChange(index, e.target.value)}
+              placeholder="Price"
+              />
+              </div>
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
           </div>
         ))}
       </div>
@@ -209,6 +249,7 @@ const CreateRoom: React.FC = () => {
         <LocationSelector onLocationSelect={handleLocationSelect} />
       </div>
       <div className="flex-col  h-96 mt-20 mb-20 flex justify-center items-center rounded-lg">
+<<<<<<< HEAD
         {selectedLibrary?.price && (
           <p>
             This price will be updated for all the rooms in the library
@@ -221,6 +262,10 @@ const CreateRoom: React.FC = () => {
           className="border-2 border-gray-300 rounded-lg p-2"
           onChange={(e) => setPrice(e.target.value)}
         />
+=======
+
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
         <div className="flex justify-center mt-8">
           <button
             onClick={handleSubmit}

@@ -5,9 +5,17 @@ import { LabelledInput } from "./LabelledInput";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { BASEURL } from "@/lib/utils";
+<<<<<<< HEAD
 // import { Send } from "lucide-react";
+=======
+import { Activity, Send } from "lucide-react";
+import { set } from "react-hook-form";
+import Loader from "@/components/Loader";
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
 
 const Auth = ({ type }: { type: "signin" }) => {
+
+  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
@@ -26,6 +34,10 @@ const Auth = ({ type }: { type: "signin" }) => {
   // };
 
   // send otp--
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
 
   // verfiy otp
   // const verifyOtp = async () => {
@@ -46,6 +58,7 @@ const Auth = ({ type }: { type: "signin" }) => {
   async function sendRequest() {
     if (type === "signin") {
       try {
+<<<<<<< HEAD
         const response = await axios.post(
           `${BASEURL}/api/v1/admin/loginAdmin`,
           {
@@ -53,6 +66,13 @@ const Auth = ({ type }: { type: "signin" }) => {
             password: userInfo.password,
           }
         );
+=======
+        setLoading(true);
+        const response = await axios.post(`${BASEURL}/api/v1/admin/loginAdmin`, {
+          email: userInfo.email,
+          password: userInfo.password,
+        });
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
 
         if (response.data.success) {
           console.log(response);
@@ -61,19 +81,39 @@ const Auth = ({ type }: { type: "signin" }) => {
           const accountType = response.data.data.accountType;
           const accountId = response.data.data._id;
 
+<<<<<<< HEAD
           localStorage.setItem("token", token);
+=======
+
+          localStorage.setItem("token", token);
+
+          localStorage.setItem("userId", accountId);
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
 
           localStorage.setItem("userId", accountId);
 
           localStorage.setItem("role", accountType);
 
           const role = localStorage.getItem("role");
+<<<<<<< HEAD
           console.log("----65");
           // TODO: Check if user has rooms
           // @ts-ignore
           if (!response?.hasRooms) {
             navigate("/manage-library/create-room", { replace: true });
           } else {
+=======
+          // console.log("----65");
+          setLoading(false);
+
+
+          if (!response?.hasRooms) {
+            navigate("/manage-library/create-room");
+          } else {
+
+
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
             role === "Admin"
               ? navigate("/dashboard", { replace: true })
               : navigate("/admin", { replace: true });
@@ -140,7 +180,12 @@ const Auth = ({ type }: { type: "signin" }) => {
             Hello! Let's get started
           </h6>
           <div className="px-20">
+<<<<<<< HEAD
             {/* {showOtp && userInfo.phone >= 1000000 && (
+=======
+
+            {showOtp && userInfo.phone >= 1000000 && (
+>>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
               <div className="flex justify-between items-center gap-2 mb-4">
                 <input
                   className="px-4 py-2 w-full rounded-lg border text-base bg-white text-gray-400"
@@ -173,18 +218,31 @@ const Auth = ({ type }: { type: "signin" }) => {
                 setUserInfo({ ...userInfo, password: e.target.value })
               }
             />
-            <button
-              className="w-full bg-gradient-to-r from-sky-500 to-blue-300 text-white py-2 px-4 rounded-full mt-1 hover:bg-blue-600"
-              type="button"
-              onClick={sendRequest}
-            >
-              {type === "signin" ? "Sign In" : "Sign Up"}
-            </button>
+            <div>
+            {
+  loading ? (
+    <div className="flex justify-center items-center gap-2">
+      <Loader />
+    </div>
+  ) : (
+    <button
+      className="w-full bg-gradient-to-r from-sky-500 to-blue-300 text-white py-2 px-4 rounded-full mt-1 hover:bg-blue-600"
+      type="button"
+      onClick={sendRequest}
+    >
+      {type === "signin" ? "Sign In" : "Sign Up"}
+    </button>
+  )
+}
+              
+
+                </div>
+          
+          </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+      );
 };
 
-export default Auth;
+      export default Auth;
