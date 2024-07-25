@@ -1,31 +1,23 @@
-//to see approved libraries 
+//to see approved libraries
 
-import { getApprovedLibraries } from "@/hooks/libraryData";
+// import { getApprovedLibraries } from "@/hooks/libraryData";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const View = () => {
+  // const [data, setData] = useState([]);
 
-  const [data, setData] = useState([]);
-
-  useEffect(()=>{
-
+  useEffect(() => {
     const getLibraries = async () => {
-
       // const res = await getApprovedLibraries();
       // console.log(res.data, "res44");
       // setData(res.data.data);
-    }
+    };
 
     getLibraries();
-  },[])
+  }, []);
 
-  return (
-
-    <div>
-      libraries
-    </div>
-  )
+  return <div>libraries</div>;
 };
 
 export default View;

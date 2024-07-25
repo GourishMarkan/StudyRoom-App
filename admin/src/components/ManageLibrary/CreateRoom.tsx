@@ -5,7 +5,7 @@ import LocationSelector from "./LocationSelector";
 import Seats from "../seatinglayout/SeatLayout";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "@/components/ui/progress";
 
 const CreateRoom: React.FC = () => {
   const [libraryId, setLibraryId] = React.useState("");
@@ -16,7 +16,7 @@ const CreateRoom: React.FC = () => {
   const [location, setLocation] = React.useState(null);
   const [loading, setLoading] = useState(false); // Step 1: Loading state
   const [rooms, setRooms] = useState([]);
-  const [progress, setProgress] = React.useState(13)
+  const [progress, setProgress] = React.useState(13);
   const [selectedRoom, setSelectedRoom] = useState([]);
 
   const [selectedLibrary, setSelectedLibrary] = useState(null);
@@ -56,7 +56,7 @@ const CreateRoom: React.FC = () => {
     // console.log(seatLayout);
     // setSeatLayout((prev) => [...prev, seat]);
   };
-  const handleTimeChange = (index, type, newValue) => {
+  const handleTimeChange = (index, type, newValue): any => {
     const updatedTimeSlots = [...timeSlots];
     updatedTimeSlots[index][type] = newValue;
     setTimeSlots(updatedTimeSlots);
@@ -65,15 +65,15 @@ const CreateRoom: React.FC = () => {
 
   const handleLibraryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLibraryId(event.target.value);
-    
   };
 
   useEffect(() => {
-    const libraryObject = libraryData.find(library => library?._id === libraryId);
+    const libraryObject = libraryData.find(
+      (library) => library?._id === libraryId
+    );
     setSelectedLibrary(libraryObject);
   }, [libraryId]);
   console.log(selectedLibrary);
-
 
   const createRoom = async () => {
     console.log("Creating Room", libraryId, seatLayout);
@@ -82,7 +82,7 @@ const CreateRoom: React.FC = () => {
       const response = await axios.post(
         `${BASEURL}/api/v1/library/createRoom`,
         {
-          libraryId:libraryId, 
+          libraryId: libraryId,
           seatLayout: seatLayout,
         }
       );
@@ -93,9 +93,7 @@ const CreateRoom: React.FC = () => {
     }
   };
 
-
   const addDetails = async () => {
-
     const formattedTimeSlots = timeSlots.map((timeSlot) => ({
       ...timeSlot,
       from: timeSlot.from ? dayjs(timeSlot.from).format("hh:mm A") : null,
@@ -112,10 +110,11 @@ const CreateRoom: React.FC = () => {
         {
           libraryId: libraryId,
           price: price,
-          timeSlot: formattedTimeSlots  ,
+          timeSlot: formattedTimeSlots,
           location: location,
         }
       );
+      console.log(response.data, "Room Details Added");
       setLoading(false);
     } catch (error) {
       console.error("Error creating room:", error);
@@ -123,15 +122,12 @@ const CreateRoom: React.FC = () => {
     }
   };
 
-
-
   const handleSubmit = async () => {
     try {
       // if(!libraryId){
       //   toast.error("Please relogin, NO library Exists")
       // }
 
-      
       await createRoom();
 
       await addDetails();
@@ -144,12 +140,12 @@ const CreateRoom: React.FC = () => {
   //   setSelectedRoom(event.target.value);
   // };
   React.useEffect(() => {
-    const timer = setTimeout(() => setProgress(66), 500)
-    return () => clearTimeout(timer)
-  }, [])
+    const timer = setTimeout(() => setProgress(66), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if(loading){
-    return <Progress value={progress} className="w-[60%]" />
+  if (loading) {
+    return <Progress value={progress} className="w-[60%]" />;
   }
   return (
     <div className="flex flex-col bg-gray-100 items-center  gap-y-15 overflow-y-scroll h-screen mb-20">
@@ -194,12 +190,16 @@ const CreateRoom: React.FC = () => {
             <TimePicker
               label="From"
               value={timeRange.from}
-              onChange={(newValue) => handleTimeChange(index, "from", newValue)}
+              onChange={(newValue: any) =>
+                handleTimeChange(index, "from", newValue)
+              }
             />
             <TimePicker
               label="To"
               value={timeRange.to}
-              onChange={(newValue) => handleTimeChange(index, "to", newValue)}
+              onChange={(newValue: any) =>
+                handleTimeChange(index, "to", newValue)
+              }
             />
           </div>
         ))}
@@ -209,14 +209,12 @@ const CreateRoom: React.FC = () => {
         <LocationSelector onLocationSelect={handleLocationSelect} />
       </div>
       <div className="flex-col  h-96 mt-20 mb-20 flex justify-center items-center rounded-lg">
-        {
-         selectedLibrary?.price && (
-            <p>
-              This price will be updated for all the rooms in the library
-              {selectedLibrary?.price}
-            </p>
-          )
-        }
+        {selectedLibrary?.price && (
+          <p>
+            This price will be updated for all the rooms in the library
+            {selectedLibrary?.price}
+          </p>
+        )}
         <input
           type="number"
           placeholder="Price"

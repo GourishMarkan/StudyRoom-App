@@ -1,11 +1,11 @@
-import { set } from "react-hook-form";
+// import { set } from "react-hook-form";
 
 export const StepFive = ({
   nextStep,
   prevStep,
   libraryDetails,
   setLibraryDetails,
-  handleFileChange 
+  handleFileChange,
 }: any) => {
   //images  - Register 5
 
@@ -48,7 +48,7 @@ export const StepFive = ({
                 if (file) {
                   setLibraryDetails({
                     ...libraryDetails,
-                    librayCardImage  : file,
+                    librayCardImage: file,
                   });
                   console.log(libraryDetails.libraryCardImage);
                 }
@@ -63,42 +63,38 @@ export const StepFive = ({
         <h2 className="text-md text-bold mb-5">Library Slider Images</h2>
 
         <div>
-        <div className="flex  items-center justify-start">
+          <div className="flex  items-center justify-start">
+            <label
+              htmlFor="uploadPanCard"
+              className="w-60 h-[50px] pl-1 flex items-center text-gray-700  border-black  py-2 text-left font-mulish font-bold text-md leading-tight  border-2"
+            >
+              Upload Slider Images
+            </label>
 
-   
-          <label
-            htmlFor="uploadPanCard"
-            className="w-60 h-[50px] pl-1 flex items-center text-gray-700  border-black  py-2 text-left font-mulish font-bold text-md leading-tight  border-2"
-          >
-            Upload Slider Images
-          </label>
-
-          <label
-            htmlFor="uploadSliderImages"
-            className="block w-32 bg-[#0077B6] py-2  text-white  h-[50px] justify-center items-center
+            <label
+              htmlFor="uploadSliderImages"
+              className="block w-32 bg-[#0077B6] py-2  text-white  h-[50px] justify-center items-center
           text-center border border-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-          >
-            Select File
-            <input
-              type="file"
-              id="uploadSliderImages"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ display: "none", justifyContent: "center" }} // Hide the actual input
-            />
-          </label>
+            >
+              Select File
+              <input
+                type="file"
+                id="uploadSliderImages"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none", justifyContent: "center" }} // Hide the actual input
+              />
+            </label>
           </div>
 
-          <div
-          className="w-full flex flex-col gap-2"
-          >
-              <h3>Uploaded Files:</h3>
-              <ul>
-                {libraryDetails.librarySliders.map((file, index) => (
-                  <li key={index}>{file.name.slice(0, 35)}</li>
-                ))}
-              </ul>
-            </div>
+          <div className="w-full flex flex-col gap-2">
+            <h3>Uploaded Files:</h3>
+            <ul>
+              {libraryDetails.librarySliders.map((file, index) => (
+                <li key={index}>{file.name.slice(0, 35)}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 

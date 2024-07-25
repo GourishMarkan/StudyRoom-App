@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import studyMain from "../assets/images/studyMain.png";
 import reading from "../assets/images/reading 1.png";
@@ -6,7 +5,7 @@ import { LabelledInput } from "./LabelledInput";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { BASEURL } from "@/lib/utils";
-import { Send } from "lucide-react";
+// import { Send } from "lucide-react";
 
 const Auth = ({ type }: { type: "signin" }) => {
   const [userInfo, setUserInfo] = useState({
@@ -16,43 +15,45 @@ const Auth = ({ type }: { type: "signin" }) => {
     password: "",
   });
 
-  const [verified, setVerified] = useState(false);
-  const [otp, setOtp] = useState(0);
-  const [showOtp, setShowOtp] = useState(false);
-  const [authMethod, setAuthMethod] = useState("password");
+  // const [verified, setVerified] = useState(false);
+  // const [otp, setOtp] = useState(0);
+  // const [showOtp, setShowOtp] = useState(false);
+  // const [authMethod, setAuthMethod] = useState("password");
   const navigate = useNavigate();
 
-  const handleAuthMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAuthMethod(e.target.value);
-  };
+  // const handleAuthMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setAuthMethod(e.target.value);
+  // };
 
   // send otp--
-  
 
   // verfiy otp
-  const verifyOtp = async () => {
-    try {
-      const response = await axios.post(`${BASEURL}/api/v1/auth/verifyOtp`, {
-        otp: otp,
-      });
-      if (response.data.success) {
-        setVerified(true);
-        console.log(verified);
-      }
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const verifyOtp = async () => {
+  //   try {
+  //     const response = await axios.post(`${BASEURL}/api/v1/auth/verifyOtp`, {
+  //       otp: otp,
+  //     });
+  //     if (response.data.success) {
+  //       setVerified(true);
+  //       console.log(verified);
+  //     }
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   async function sendRequest() {
     if (type === "signin") {
       try {
-        const response = await axios.post(`${BASEURL}/api/v1/admin/loginAdmin`, {
-          email: userInfo.email,
-          password: userInfo.password,
-        });
-      
+        const response = await axios.post(
+          `${BASEURL}/api/v1/admin/loginAdmin`,
+          {
+            email: userInfo.email,
+            password: userInfo.password,
+          }
+        );
+
         if (response.data.success) {
           console.log(response);
           const token = response.data.token;
@@ -60,25 +61,22 @@ const Auth = ({ type }: { type: "signin" }) => {
           const accountType = response.data.data.accountType;
           const accountId = response.data.data._id;
 
-          
           localStorage.setItem("token", token);
-          
+
           localStorage.setItem("userId", accountId);
-
-
 
           localStorage.setItem("role", accountType);
 
           const role = localStorage.getItem("role");
           console.log("----65");
-          if(!response?.hasRooms){
+          // TODO: Check if user has rooms
+          // @ts-ignore
+          if (!response?.hasRooms) {
             navigate("/manage-library/create-room", { replace: true });
-          }else{
-
-            
+          } else {
             role === "Admin"
-            ? navigate("/dashboard", { replace: true })
-            : navigate("/admin", { replace: true });
+              ? navigate("/dashboard", { replace: true })
+              : navigate("/admin", { replace: true });
           }
         } else {
           // Handle unsuccessful login attempt
@@ -86,7 +84,9 @@ const Auth = ({ type }: { type: "signin" }) => {
         }
       } catch (e) {
         console.error("Error during login:", e);
-        alert("Error while signing up. Please check the console for more details.");
+        alert(
+          "Error while signing up. Please check the console for more details."
+        );
       }
     }
   }
@@ -140,8 +140,7 @@ const Auth = ({ type }: { type: "signin" }) => {
             Hello! Let's get started
           </h6>
           <div className="px-20">
-    
-            {showOtp && userInfo.phone >= 1000000 && (
+            {/* {showOtp && userInfo.phone >= 1000000 && (
               <div className="flex justify-between items-center gap-2 mb-4">
                 <input
                   className="px-4 py-2 w-full rounded-lg border text-base bg-white text-gray-400"
@@ -157,7 +156,7 @@ const Auth = ({ type }: { type: "signin" }) => {
                   Verify
                 </button>
               </div>
-            )}
+            )} */}
             <LabelledInput
               label="Enter Email Id"
               placeholder="Email"

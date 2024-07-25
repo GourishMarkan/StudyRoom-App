@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import {
   Accordion,
@@ -6,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FaRegSun } from "react-icons/fa";
+// import { FaRegSun } from "react-icons/fa";
 
 const ManageBookings = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -17,14 +16,11 @@ const ManageBookings = () => {
 
   return (
     <div className="flex-row ">
-
       <div>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>Manage Team</AccordionTrigger>
             <AccordionContent>
-
-              
               <Link
                 to="/manage-booking/view"
                 className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"

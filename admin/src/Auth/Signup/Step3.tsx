@@ -3,8 +3,8 @@ export const StepThree = ({
   prevStep,
   userDetails,
   setUserDetails,
-  createUser,
-}: any) => (
+}: // createUser,
+any) => (
   //images  - Register 3
   <div className="flex  flex-1 overflow-y-auto px-10 py-6 bg-white rounded-lg">
     {/* Form fields for step 2 */}
@@ -73,38 +73,38 @@ export const StepThree = ({
       {/* Upload Aadhar */}
 
       <div className="flex justify-start mt-1 border-black items-center ">
-  <label
-    htmlFor="adminUploadAadharCard"
-    className="w-60 h-[50px] text-gray-700 pl-5 border-black flex items-center py-2 text-left font-normal text-md leading-tight border "
-  >
-    Upload Aadhar Card
-  </label>
+        <label
+          htmlFor="adminUploadAadharCard"
+          className="w-60 h-[50px] text-gray-700 pl-5 border-black flex items-center py-2 text-left font-normal text-md leading-tight border "
+        >
+          Upload Aadhar Card
+        </label>
 
-  <label
-    htmlFor="adminUploadAadharCard" // Corrected htmlFor to match the input's id
-    className="block w-32 bg-[#0077B6] py-2 text-white h-[50px] justify-center items-center
+        <label
+          htmlFor="adminUploadAadharCard" // Corrected htmlFor to match the input's id
+          className="block w-32 bg-[#0077B6] py-2 text-white h-[50px] justify-center items-center
   text-center border border-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-  >
-    Select File
-    <input
-      type="file"
-      id="adminUploadAadharCard"
-      accept="image/*"
-      name="adminUploadAadharCard"
-      onChange={(e) => {
-        const file = e.target.files ? e.target.files[0] : null;
-        if (file) {
-          setUserDetails({
-            ...userDetails,
-            uploadAadharCard   : file,
-          });
-          console.log(userDetails.uploadAadharCard);
-        }
-      }}
-      style={{ display: "none", justifyContent: "center" }} // Hide the actual input
-    />
-  </label>
-</div>
+        >
+          Select File
+          <input
+            type="file"
+            id="adminUploadAadharCard"
+            accept="image/*"
+            name="adminUploadAadharCard"
+            onChange={(e) => {
+              const file = e.target.files ? e.target.files[0] : null;
+              if (file) {
+                setUserDetails({
+                  ...userDetails,
+                  uploadAadharCard: file,
+                });
+                console.log(userDetails.uploadAadharCard);
+              }
+            }}
+            style={{ display: "none", justifyContent: "center" }} // Hide the actual input
+          />
+        </label>
+      </div>
       <div className="flex-col items-center justify-start mt-2">
         <label
           htmlFor="adminPanCard"
@@ -121,7 +121,6 @@ export const StepThree = ({
           onChange={(e) =>
             setUserDetails({ ...userDetails, panCard: e.target.value })
           }
-          
           placeholder="Pan Card Number"
         />
       </div>
@@ -150,7 +149,7 @@ export const StepThree = ({
               if (file) {
                 setUserDetails({
                   ...userDetails,
-                  uploadPanCard : file,
+                  uploadPanCard: file,
                 });
                 console.log(userDetails.uploadPanCard);
               }

@@ -1,4 +1,13 @@
-export const StepOne = ({ nextStep, userInfo, setUserInfo, sendOTP }) => (
+// interface StepOneProps {
+//   nextStep: () => void;
+//   userInfo: { phone: number; email: string; password: string };
+//   setUserInfo: (info: {
+//     phone: number;
+//     email: string;
+//     password: string;
+//   }) => void;
+// }
+export const StepOne = ({ nextStep, userInfo, setUserInfo }: any) => (
   <div>
     <h2 className="">Step 1</h2>
     <div className="flex  flex-col justify-start gap-2  mb-4">
