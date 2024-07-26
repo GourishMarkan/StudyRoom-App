@@ -74,74 +74,6 @@ const CreateRoom: React.FC = () => {
 
   const handleLibraryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLibraryId(event.target.value);
-<<<<<<< HEAD
-=======
-
-    // setRooms(libraryData?.rooms)
-
-  };
-  function handlePriceChange(index, newValue) {
-    // Assuming timeSlots is part of your component's state
-    // and you have a method to update this state
-    const updatedTimeSlots = [...timeSlots];
-    updatedTimeSlots[index].price = newValue;
-    setTimeSlots(updatedTimeSlots); // Update your state with the new timeSlots array
-  }
-
-
-
-  const createRoom = async () => {
-    console.log("Creating Room", libraryId, seatLayout, selectedRoom, selectedLibrary);
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${BASEURL}/api/v1/library/createRoom`,
-        {
-          libraryId: libraryId,
-
-          seatLayout: seatLayout,
-        }
-      );
-      console.log(response.data, "Room Created");
-    } catch (error) {
-      console.error("Error creating room:", error);
-      // Handle error
-    }
-  };
-
-  const addDetails = async () => {
-    const formattedTimeSlots = timeSlots.map((timeSlot) => ({
-      ...timeSlot,
-      from: timeSlot.from ? dayjs(timeSlot.from).format("hh:mm A") : null,
-      to: timeSlot.to ? dayjs(timeSlot.to).format("hh:mm A") : null,
-    }));
-
-    console.log(formattedTimeSlots);
-    // console.log(seatLayout);
-
-    console.log("Adding Details", libraryId, price, timeSlot, location);
-    try {
-      const response = await axios.post(
-        `${BASEURL}/api/v1/library/updateRoom`,
-        {
-          libraryId: libraryId,
-          price: price,
-          timeSlot: formattedTimeSlots,
-          location: location,
-        }
-      );
-      toast.success("Room Created/updated Successfully")
-      setLoading(false);
-    } catch (error) {
-      console.error("Error creating room:", error);
-      // Handle error
-    }
-  };
-
-
-
-
->>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
   const handleSubmit = async () => {
     try {
       if (!libraryId) {
@@ -168,11 +100,7 @@ const CreateRoom: React.FC = () => {
   }, []);
 
   if (loading) {
-<<<<<<< HEAD
     return <Progress value={progress} className="w-[60%]" />;
-=======
-    return <Progress value={progress} className="w-[60%]" />
->>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
   }
 
   // console.log("----->", selectedLibrary.rooms, selectedLibrary.rooms.length )
@@ -219,26 +147,25 @@ const CreateRoom: React.FC = () => {
       <div className="w-[90%] mx-20 mt-60">
         <h2 className="text-center">Select Time Slots</h2>
         {timeSlots.map((timeRange, index) => (
-<<<<<<< HEAD
-          <div
-            key={index}
-            className="flex justify-evenly items-center bg-gray-200 p-2 rounded-lg mt-2 mb-5 rounded-xl"
-          >
-            <TimePicker
-              label="From"
-              value={timeRange.from}
-              onChange={(newValue: any) =>
-                handleTimeChange(index, "from", newValue)
-              }
-            />
-            <TimePicker
-              label="To"
-              value={timeRange.to}
-              onChange={(newValue: any) =>
-                handleTimeChange(index, "to", newValue)
-              }
-            />
-=======
+        <div
+          key={index}
+          className="flex justify-evenly items-center bg-gray-200 p-2 rounded-lg mt-2 mb-5 rounded-xl"
+        >
+          <TimePicker
+            label="From"
+            value={timeRange.from}
+            onChange={(newValue: any) =>
+              handleTimeChange(index, "from", newValue)
+            }
+          />
+          <TimePicker
+            label="To"
+            value={timeRange.to}
+            onChange={(newValue: any) =>
+              handleTimeChange(index, "to", newValue)
+            }
+          />
+
           <div className="flex-col  justify-center items-center">
             <div
               key={index}
@@ -274,7 +201,6 @@ const CreateRoom: React.FC = () => {
         <LocationSelector onLocationSelect={handleLocationSelect} />
       </div>
       <div className="flex-col  h-96 mt-20 mb-20 flex justify-center items-center rounded-lg">
-<<<<<<< HEAD
         {selectedLibrary?.price && (
           <p>
             This price will be updated for all the rooms in the library
@@ -287,10 +213,6 @@ const CreateRoom: React.FC = () => {
           className="border-2 border-gray-300 rounded-lg p-2"
           onChange={(e) => setPrice(e.target.value)}
         />
-=======
-
-
->>>>>>> 5ce7fee4ea55a0730e496f9bddd8e0b70763d594
         <div className="flex justify-center mt-8">
           <button
             onClick={handleSubmit}
@@ -303,7 +225,7 @@ const CreateRoom: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+ );
 };
 
 export default CreateRoom;
