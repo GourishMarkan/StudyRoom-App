@@ -1,10 +1,12 @@
 //to see approved libraries
-
-// import { getApprovedLibraries } from "@/hooks/libraryData";
+// @ts-ignore
+import { getApprovedLibraries } from "@/hooks/libraryData";
 
 import { useEffect } from "react";
 
 const View = () => {
+  // const [data, setData] = useState([]);
+
   // const [data, setData] = useState([]);
 
   useEffect(() => {

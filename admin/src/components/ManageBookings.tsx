@@ -19,7 +19,7 @@ const ManageBookings = () => {
       <div>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger>Manage Team</AccordionTrigger>
+            <AccordionTrigger>Manage Bookings</AccordionTrigger>
             <AccordionContent>
               <Link
                 to="/manage-booking/view"

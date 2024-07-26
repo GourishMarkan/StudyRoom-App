@@ -1,12 +1,3 @@
-// interface StepOneProps {
-//   nextStep: () => void;
-//   userInfo: { phone: number; email: string; password: string };
-//   setUserInfo: (info: {
-//     phone: number;
-//     email: string;
-//     password: string;
-//   }) => void;
-// }
 export const StepOne = ({ nextStep, userInfo, setUserInfo }: any) => (
   <div>
     <h2 className="">Step 1</h2>

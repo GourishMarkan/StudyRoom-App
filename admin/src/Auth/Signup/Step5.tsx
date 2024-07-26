@@ -9,8 +9,8 @@ export const StepFive = ({
 }: any) => {
   //images  - Register 5
 
-  const handleAmenityChange = (amenityKey, newValue) => {
-    setLibraryDetails((prevDetails) => ({
+  const handleAmenityChange = (amenityKey: any, newValue: any) => {
+    setLibraryDetails((prevDetails: any) => ({
       ...prevDetails,
       amentities: {
         ...prevDetails.amentities,
@@ -91,6 +91,14 @@ export const StepFive = ({
             <h3>Uploaded Files:</h3>
             <ul>
               {libraryDetails.librarySliders.map((file, index) => (
+                <li key={index}>{file.name.slice(0, 35)}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-full flex flex-col gap-2">
+            <h3>Uploaded Files:</h3>
+            <ul>
+              {libraryDetails.librarySliders.map((file: any, index: any) => (
                 <li key={index}>{file.name.slice(0, 35)}</li>
               ))}
             </ul>

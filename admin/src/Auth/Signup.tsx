@@ -13,9 +13,8 @@ import { StepFive } from "./Signup/Step5";
 
 import { BASEURL } from "@/lib/utils";
 import axios from "axios";
-//  TODO -SOLVE THIS
 // @ts-ignore
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "@/components/Loader";
 // Add similar components for StepThree, StepFour, and StepFive
 
@@ -332,6 +331,8 @@ function Signup() {
 
   const createInitialLib = async () => {
     console.log(libraryDetails, "libraryDetails-----------------d------");
+
+    // console.log(libraryDetails, "libraryDetails-----------------d------");
 
     const amenitiesArray = Object.entries(libraryDetails.amentities)
       .filter(([key, value]) => value)
