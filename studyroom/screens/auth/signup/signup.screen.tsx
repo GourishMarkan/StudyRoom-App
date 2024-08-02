@@ -34,11 +34,14 @@ import axios from "axios";
 import { Feather } from "@expo/vector-icons";
 import { BACKEND } from "@/utils/config";
 import Button from "@/components/Button";
+import { Toast } from "react-native-toast-notifications";
 
 
 export default function SignUpScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
+
+  const [otpVerified, setotpVerified] = useState(false);
 
   const [showOtp, setShowOtp] = useState(false);
 
@@ -55,7 +58,7 @@ export default function SignUpScreen() {
     password: "",
   });
 
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = [createRef(), createRef(), createRef(), createRef()];
 
   const handleOtpChange = (text, index) => {
@@ -140,11 +143,13 @@ export default function SignUpScreen() {
       try {
         
         let response = await axios.post(`${BACKEND}/api/v1/auth/verifyOtp`, {
+          phoneNumber : userInfo.phone,
           otp: otpValue,
         });
 
       if (response.data.success) {
         setVerified(true);
+        setotpVerified(true);
       }
 
       console.log(response.data);
@@ -162,23 +167,23 @@ export default function SignUpScreen() {
 
   //signup api 
   const handleSignUp = async () => {
-    // if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.password) {
-    //   setRequired(true);
-    //   return;
-    // }
-    // if (validatePassword(userInfo.password)) {
-    //   setError({ password: validatePassword(userInfo.password) });
-    //   return;
-    // }
-    // setButtonSpinner(true);
 
-    // if(!verified){
-    //   // Toast.show("Please verify your phone number", {
-    //   //   type: "danger",
-    //   // });
-    //   setButtonSpinner(false);
-    //   return;
-    // }
+if(!otpVerified){
+  Toast.show("Please verify OTP", {
+    type: "danger",
+    duration: 3000,
+    placement: "top",
+    style: {
+      backgroundColor:'red',
+      borderRadius: 10,
+      padding: 10,
+      marginTop:50
+
+
+    }
+  });
+}
+
     console.log("signup.screen.tsx>>>>>>", userInfo);
     try {
       console.log("Sending signup data:", {
@@ -191,13 +196,12 @@ export default function SignUpScreen() {
 
 
       let formData = new FormData();
-      console.log("Image path:", typeof image  )
+      // console.log("Image path:", typeof image  )
 
-      formData.append('profile', {
-        uri: image,
-        type: '*/*', 
-        name: `${userInfo.name}.jpg`, // The name of the image file
-      });
+      const respon = await fetch(image);
+      const blob = await respon.blob();
+      const file = new File([blob], `${userInfo.name}.jpg`, { type: blob.type });
+      formData.append('profile', file);
 
       // Append other user info to formData
       formData.append('username', userInfo.name);
@@ -238,11 +242,7 @@ export default function SignUpScreen() {
         flex: 1,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
+    
         <View style={styles.signInImage}>
           <View
             style={{
@@ -480,18 +480,21 @@ export default function SignUpScreen() {
                   marginBottom: 40,
                 }}
               >
-                <TouchableOpacity
-                  style={{
-                    padding: 20,
-                    borderRadius: 8,
-                    marginHorizontal: 16,
 
-                    marginTop: 15,
-                  }}
-                  onPress={() => handleSignUp()}
-                >
-                  <Button text="Register" width={250} height={60} />
-                </TouchableOpacity>
+                         <TouchableOpacity
+                         style={{
+                           padding: 20,
+                           borderRadius: 8,
+                           marginHorizontal: 16,
+       
+                           marginTop: 15,
+                         }}
+                         onPress={() => handleSignUp()}
+                       >
+                         <Button text="Register" width={250} height={60} />
+                       </TouchableOpacity>
+
+
 
                 <TouchableOpacity
                   style={{
@@ -518,7 +521,7 @@ export default function SignUpScreen() {
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
-      </View>
+
     </SafeAreaView>
   );
 }

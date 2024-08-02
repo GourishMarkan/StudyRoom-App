@@ -10,7 +10,7 @@ async function getLibraryDataById() {
     userId : userId,
 
   })
-  const data = await response;
+  const data =  response;
   return data;
 }
 
@@ -25,4 +25,4 @@ async function getBookings() {
   return response;
 }
 
-export { getLibraryDataById, getApprovedLibraries };
+export { getLibraryDataById, getApprovedLibraries, getBookings };

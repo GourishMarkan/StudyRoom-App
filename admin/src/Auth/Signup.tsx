@@ -17,7 +17,11 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "@/components/Loader";
 // Add similar components for StepThree, StepFour, and StepFive
-
+interface LibraryDetails {
+  name: string;
+  librarySliders:string
+  // Add other properties as needed
+}
 const FinalStep = () => {
   const navigate = useNavigate();
   return (
@@ -68,7 +72,7 @@ function Signup() {
     },
   });
 
-  const [libraryDetails, setLibraryDetails] = useState({
+  const [libraryDetails, setLibraryDetails] = useState<any>({
     libraryName: "",
     libraryApp: {
       shortDescription: "",
@@ -122,7 +126,7 @@ function Signup() {
     const admin = localStorage.getItem("userId");
     if (token !== "" && admin !== "") {
       setCurrentStep(4);
-      setToken(token);
+      setToken(token || "");
     }
     console.log(token, "token");
     console.log(currentStep, "currentstep");
@@ -165,7 +169,8 @@ function Signup() {
     }
     console.log("verfication start");
 
-    const res = await axios.post(`${BASEURL}/api/v1/auth/verifyOTP`, { otp });
+    const res = await axios.post(`${BASEURL}/api/v1/auth/verifyOtp`, {phoneNumber: userInfo.phone, 
+       otp });
     console.log(res, "res");
 
     if (res.status === 200 || res.status === 201) {
@@ -208,13 +213,14 @@ function Signup() {
   };
 
   const verifyEmailOTP = async () => {
-    const notify = () => toast("Verified Email OTP");
+  
     const otp = emailOtpInputs;
     if (Number(otp) < 1000) {
       return;
     }
 
     const res = await axios.post(`${BASEURL}/api/v1/auth/verifyEmailOtp`, {
+      email: userInfo.email,  
       otp,
     });
     console.log(res, "res");
@@ -223,11 +229,23 @@ function Signup() {
       console.log(res.data, "res.data");
       setVerifiedOtp((prev) => ({ ...prev, two: true }));
 
+      setVerifiedOtp(
+        (prev) => ({ ...prev, two: true })
+      )
+      const notify = () => toast("Verified Email OTP");
       notify();
     } else {
-      // toast({
-      //   description: "Your Email Otp has not been verified.",
-      // });
+      toast('Not verified', { 
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+  
+        });
     }
   };
 
@@ -243,6 +261,24 @@ function Signup() {
       }));
     }
   };
+      const files = Array.from(event.target.files);
+      if (files.length > 0) {
+        setLibraryDetails((prevLibraryDetails: LibraryDetails) => ({
+          ...prevLibraryDetails,
+          librarySliders: [...prevLibraryDetails.librarySliders, ...files],
+        }));
+      }
+    }
+  };
+  // const updateLibraryDetails = (prevLibraryDetails: LibraryDetails): LibraryDetails => {
+  //   return {
+  //     ...prevLibraryDetails,
+  //     librarySliders: [...prevLibraryDetails.librarySliders, newFile], // Assuming newFile is of type File
+  //   };
+  // };
+  
+  // // Usage
+  // setLibraryDetails((prev) => updateLibraryDetails(prev));
 
   useEffect(() => {
     if (Number(userOTP) > 1000) {
@@ -283,8 +319,14 @@ function Signup() {
     formData.append("Address", JSON.stringify(userDetails.address)); // Assuming Address is an object and needs to be stringified
     formData.append("username", createUserName);
 
-    formData.append("aadhar", userDetails.uploadAadharCard);
-    formData.append("pancard", userDetails.uploadPanCard);
+   
+if (userDetails.uploadAadharCard) {
+  formData.append("aadhar", userDetails.uploadAadharCard);
+}
+
+if (userDetails.uploadPanCard) {
+  formData.append("pancard", userDetails.uploadPanCard);
+}
 
     try {
       const response = await axios.post(
@@ -337,6 +379,8 @@ function Signup() {
     const amenitiesArray = Object.entries(libraryDetails.amentities)
       .filter(([key, value]) => value)
       .map(([key]) => key);
+  .filter(([ value]) => value)
+  .map(([key]) => key);
 
     const AdminId = localStorage.getItem("userId");
     console.log(AdminId);
@@ -375,6 +419,21 @@ function Signup() {
     formData.append("tan", libraryDetails.libraryLegal.uploadTan);
     formData.append("msme", libraryDetails.libraryLegal.uploadmsme);
 
+    if (libraryDetails?.librayCardImage) {
+      formData.append("card", libraryDetails.librayCardImage);
+    }
+    if (libraryDetails.libraryLegal.uploadGst) {
+      formData.append("gst", libraryDetails.libraryLegal.uploadGst);
+    }
+    if (libraryDetails.libraryLegal.uploadCin) {
+      formData.append("cin", libraryDetails.libraryLegal.uploadCin);
+    }
+    if (libraryDetails.libraryLegal.uploadTan) {
+      formData.append("tan", libraryDetails.libraryLegal.uploadTan);
+    }
+    if (libraryDetails.libraryLegal.uploadmsme) {
+      formData.append("msme", libraryDetails.libraryLegal.uploadmsme);
+    }
     // console.log(
     //   LibraryDataOBJ,
     //   typeof LibraryDataOBJ.seatLayout,
@@ -480,6 +539,14 @@ function Signup() {
         );
       case 6:
         return <FinalStep prevStep={prevStep} />;
+        return (
+          <FinalStep
+
+            // prevStep={prevStep}
+
+
+          />
+        );
       default:
         return <h2>Final Step</h2>;
     }

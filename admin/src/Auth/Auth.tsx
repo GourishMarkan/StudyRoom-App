@@ -19,10 +19,6 @@ const Auth = ({ type }: { type: "signin" }) => {
     password: "",
   });
 
-  // const [verified, setVerified] = useState(false);
-  // const [otp, setOtp] = useState(0);
-  // const [showOtp, setShowOtp] = useState(false);
-  const [authMethod, setAuthMethod] = useState("password");
   const navigate = useNavigate();
 
   // const handleAuthMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +55,8 @@ const Auth = ({ type }: { type: "signin" }) => {
         );
 
         if (response.data.success) {
-          console.log(response);
+          console.log("🚀 ~ sendRequest ~ response:", response);
+
           const token = response.data.token;
 
           const accountType = response.data.data.accountType;
@@ -72,9 +69,10 @@ const Auth = ({ type }: { type: "signin" }) => {
           localStorage.setItem("role", accountType);
 
           const role = localStorage.getItem("role");
-          console.log("----65");
-          // TODO: Check if user has rooms
-          // @ts-ignore
+          // console.log("----65");
+          setLoading(false);
+
+          //@ts-ignore
           if (!response?.hasRooms) {
             navigate("/manage-library/create-room", { replace: true });
           } else {
@@ -84,9 +82,11 @@ const Auth = ({ type }: { type: "signin" }) => {
           }
         } else {
           // Handle unsuccessful login attempt
+          setLoading(false);
           alert("Login failed. Please check your credentials.");
         }
       } catch (e) {
+        setLoading(false);
         console.error("Error during login:", e);
         alert(
           "Error while signing up. Please check the console for more details."
