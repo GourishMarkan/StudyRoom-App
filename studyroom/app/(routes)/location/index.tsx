@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker } from 'react-native-maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
 
 const locations = [
   { id: '1', name: 'Location 1', latitude: 37.78825, longitude: -122.4324 },
@@ -12,21 +13,44 @@ const locations = [
 ];
 
 const LocationsScreen = ({ navigation }) => {
+
+
+  const dispatch = useDispatch();
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [locations, setLocations] = useState([]);
+
+  const citiesData = useSelector((state) => state.app);
+
+  useEffect(() => {
+    setLocations(citiesData.locations || []);
+  }, [citiesData.locations]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const citiesData = useSelector((state) => state.app);
+
+        setLocations(citiesData.locations);
+      } catch (error) {
+        console.error('Failed to fetch data', error);
+      }
+        console.log("🚀 ~ fetchData ~ citiesData.locations:", citiesData.locations)
+    };
+
+    fetchData();
+  }, []);
 
   const handleLocationSelect = async (location) => {
-    // Handle location selection
     console.log('Selected location:', location);
     setSelectedLocation(location);
 
-    // Save the selected location to AsyncStorage
     try {
       await AsyncStorage.setItem('selectedLocation', location.name);
     } catch (error) {
       console.error('Failed to save location to AsyncStorage', error);
     }
 
-    // Navigate back or to another screen if needed
     navigation.goBack();
   };
 
@@ -36,27 +60,27 @@ const LocationsScreen = ({ navigation }) => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude: 23.3449,
+          longitude: 85.3117,
+          latitudeDelta: 10,
+          longitudeDelta: 10,
         }}
       >
         {locations.map((location) => (
           <Marker
-            key={location.id}
-            coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-            title={location.name}
+            key={location._id} // Ensure each Marker has a unique key
+            coordinate={{ latitude: location.coords[0], longitude: location.coords[1] }}
+            title={location.location}
             onPress={() => handleLocationSelect(location)}
           />
         ))}
       </MapView>
       <FlatList
         data={locations}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id} // Ensure each item has a unique key
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleLocationSelect(item)}>
-            <Text style={styles.locationItem}>{item.name}</Text>
+            <Text style={styles.locationItem}>{item.location}</Text>
           </TouchableOpacity>
         )}
       />
