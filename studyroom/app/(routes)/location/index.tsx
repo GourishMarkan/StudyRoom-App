@@ -46,7 +46,8 @@ const LocationsScreen = ({ navigation }) => {
     setSelectedLocation(location);
 
     try {
-      await AsyncStorage.setItem('selectedLocation', location.name);
+        console.log("🚀 ~ handleLocationSelect ~ location.name:", location.location)
+      await AsyncStorage.setItem('selectedLocation', location.location);
     } catch (error) {
       console.error('Failed to save location to AsyncStorage', error);
     }
