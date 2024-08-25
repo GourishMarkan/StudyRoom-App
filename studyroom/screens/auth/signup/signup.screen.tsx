@@ -90,21 +90,21 @@ export default function SignUpScreen() {
     }
   };
 
-  const validatePassword = (password: string) => {
-    // Check if password is at least 8 characters long
-    if (password.length < 8) {
-      return "Password should be at least 8 characters";
-    }
+  // const validatePassword = (password: string) => {
+  //   // Check if password is at least 8 characters long
+  //   if (password.length < 8) {
+  //     return "Password should be at least 8 characters";
+  //   }
 
-    // Add more checks as needed
-    // For example, check if password contains at least one number
-    if (!/\d/.test(password)) {
-      return "Password should contain at least one number";
-    }
+  //   // Add more checks as needed
+  //   // For example, check if password contains at least one number
+  //   if (!/\d/.test(password)) {
+  //     return "Password should contain at least one number";
+  //   }
 
-    // If all checks pass, return null
-    return null;
-  };
+  //   // If all checks pass, return null
+  //   return null;
+  // };
 
   const sendOtp = async () => {
     try {
@@ -185,7 +185,7 @@ export default function SignUpScreen() {
       });
     }
 
-    console.log("signup.screen.tsx>>>>>>", userInfo);
+    // console.log("signup.screen.tsx>>>>>>", userInfo);
     try {
       // console.log("Image path:", typeof image  )
       if (!image) {
@@ -202,12 +202,12 @@ export default function SignUpScreen() {
         });
         return;
       }
-
+      if (image) {
       formData.append("image", {
         uri: image,
         name: "image.jpg", // Replace with desired filename
         type: "image/jpeg", // Replace with correct image type
-      });
+      });}
 
       // Append other user info to formData
       formData.append("username", userInfo.name);
@@ -225,7 +225,7 @@ export default function SignUpScreen() {
           },
         }
       );
-      console.log("🚀 ~ handleSignUp ~ response:", response);
+      // console.log("🚀 ~ handleSignUp ~ response:", response);
       if (response.status == 200 || 201) {
         await AsyncStorage.setItem(
           "token",
@@ -245,12 +245,16 @@ export default function SignUpScreen() {
           },
 
         });
+
+        if(buttonSpinner){
+          setButtonSpinner(false);
+        }
         router.push("/(tabs)");
       }
     } catch (error) {
       setButtonSpinner(false);
       console.log(error);
-      setButtonSpinner(false);
+ 
       Toast.show("An error occured", {
         type: "danger",
       });

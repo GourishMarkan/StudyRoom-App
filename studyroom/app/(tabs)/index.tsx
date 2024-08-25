@@ -18,7 +18,7 @@ import Header from "@/components/Header";
 import { router } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const { width, height } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NotListedModal from "@/components/NotListedModal";
@@ -322,9 +322,13 @@ export default function index() {
         backgroundColor: "white",
       }}
     >
-      <View style={{ marginTop: 0 }}>
+      <TouchableOpacity style={{ marginTop: 0 }} 
+      onPress={()=>{
+        router.navigate('/(routes)/location')
+      }}
+      >
         <Header color="black" handleLocationChange={handleLocationChange} />
-      </View>
+      </TouchableOpacity>
 
       <NotListedModal isVisible={notListed} onClose={toggleNotListedModal} />
 
