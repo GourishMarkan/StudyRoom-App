@@ -96,6 +96,11 @@ store={store}
 
 
         }} />
+        <Stack.Screen name="(routes)/location/index" options={{
+          headerShown: false,
+
+
+        }} />
     
         <Stack.Screen name="(tabs)" options={{
           headerShown: false

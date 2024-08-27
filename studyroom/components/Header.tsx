@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'; // Ensure React is imported for JSX transformation
+import React, { useEffect, useState } from 'react';
 import {
-  PermissionsAndroid,
   SafeAreaView,
   View,
   Text,
@@ -8,41 +7,14 @@ import {
 } from "react-native";
 import { Dimensions } from "react-native";
 import { Image } from "expo-image";
-import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from "@expo/vector-icons";
 import { useAssets } from "expo-asset";
-import { useDispatch, useSelector } from "react-redux";
-import { set } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get("window");
 
-const Header= ({ color ,handleLocationChange }:any) => {
-  const dispatch = useDispatch(); 
-  const [selectedLocation, setSelectedLocation] = useState();
-  const [Enable, setEnable] = useState(true);
-
-  const citiesData = useSelector((state) => state.app); // Moved useSelector inside the component
-  // console.log("🚀 ~ Header ~ citiesData:", citiesData)
-
-  // useState for cities is initialized with an empty array
-  const [cities, setCities] = useState(citiesData.locations || []);
-  console.log(selectedLocation)
-
-  
-
-  // useEffect to update cities when citiesData changes
-  useEffect(() => {
-    setCities(citiesData.locations || []);
-
-  }, [citiesData.locations]);
-
-  useEffect(() => {
-    if (selectedLocation) {
-      // Call fetchLibrary or dispatch an action to fetch library data
-      console.log(`Fetching library for location: ${selectedLocation}`);
-      // Example: dispatch(fetchLibrary(selectedLocation));
-    }
-  }, [selectedLocation, dispatch]);
+const Header = ({ color }: any) => {
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   const [assets, error] = useAssets([
     require("../assets/icons/headerlogo.svg"),
@@ -50,6 +22,21 @@ const Header= ({ color ,handleLocationChange }:any) => {
     require("../assets/icons/Ekaant.svg"),
     require("../assets/icons/Headerloc.svg"),
   ]);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const location = await AsyncStorage.getItem('selectedLocation');
+        if (location) {
+          setSelectedLocation(location);
+        }
+      } catch (error) {
+        console.error('Failed to fetch location from AsyncStorage', error);
+      }
+    };
+
+    fetchLocation();
+  }, []);
 
   return (
     <View style={styles.header}>
@@ -70,7 +57,7 @@ const Header= ({ color ,handleLocationChange }:any) => {
           <Ionicons name="chevron-down-outline" size={20} color={color} />
         </View>
 
-        <View style={styles.picker}>
+        <View style={styles.selectedCity}>
           {color === "white" ? (
             <Ionicons name="location-outline" size={20} color={color} />
           ) : (
@@ -85,43 +72,9 @@ const Header= ({ color ,handleLocationChange }:any) => {
               />
             )
           )}
-
-          <Picker
-            selectedValue={selectedLocation}
-            style={{
-              height: 20,
-              width: 180,
-              borderRadius: 150,
-              color: color,
-              borderBlockColor: color,
-              borderWidth: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            mode={"dropdown"}
-            onValueChange={(itemValue, itemIndex) => {
-              setSelectedLocation(itemValue);
-              handleLocationChange(itemValue);
-              setEnable(false); // Consider updating this logic as needed
-            }}
-          >
-            {cities.map((city, index) => (
-              <Picker.Item
-                key={index}
-                label={`${city.location}, IN`}
-                value={city.location}
-                style={{
-                  color: "#000000",
-                  lineHeight: 25,
-                  fontSize: 15,
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                  textAlign: "center",
-                  borderRadius: 20,
-                }}
-              />
-            ))}
-          </Picker>
+          <Text style={styles.selectedCityText}>
+            {selectedLocation ? `${selectedLocation}, IN` : 'No location'}
+          </Text>
         </View>
       </View>
 
@@ -165,16 +118,15 @@ const Header= ({ color ,handleLocationChange }:any) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   header: {
     height: height * 0.085,
     width: "100%",
-
     paddingHorizontal: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    // backgroundColor: "pink",
     marginBottom: 10,
   },
   logoContainer: {
@@ -198,44 +150,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-  picker: {
-    flexDirection: "row",
-    alignItems: "center",
-    zIndex: 3,
-    height: 30,
-    paddingHorizontal: 5,
-
-    // backgroundColor: "red",
-
-    borderRadius: 40,
-  },
   selectedCity: {
-    flex: 1,
+    flexDirection: "row",
     alignItems: "center",
   },
   selectedCityText: {
     fontSize: 16,
-    fontWeight: "bold",
-  },
-  container: {
-    flex: 1, // Make content take full screen height
-  },
-  locationContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f0f0f0", // Light background
-    padding: 10,
-    margin: 10,
-  },
-  locationText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  locationData: {
-    fontSize: 16,
-  },
-  errorText: {
-    color: "red",
+    fontWeight: "semibold",
+    marginLeft: 5,
   },
 });
 

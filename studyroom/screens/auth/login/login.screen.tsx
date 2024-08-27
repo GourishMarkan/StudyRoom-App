@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router } from "expo-router";
-import React, { createRef, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import {
   Text,
   TextInput,
@@ -13,15 +13,18 @@ import {
   TouchableOpacity,
   View,
   Image,
-  KeyboardAvoidingView,
+
   SafeAreaView
 } from "react-native";
 
 import { Toast } from "react-native-toast-notifications";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const LoginScreen: React.FC = () => {
-  const [email, setEmail] = useState("Usertest@gmail.com");
-  const [password, setPassword] = useState("Teatuser");
+
+  const [password, setPassword] = useState("Password");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = [createRef(), createRef(), createRef(), createRef()];
@@ -34,7 +37,8 @@ const LoginScreen: React.FC = () => {
       inputRefs[index + 1].current.focus();
     }
   };
-  const [loginOption, setLoginOption] = useState("password"); // 'password' or 'otp'
+
+  const [loginOption, setLoginOption] = useState("password");
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const login = async () => {
     if (!email || !password) {
@@ -46,49 +50,96 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const handleLogin = async () => {
-    // Implement your login logic here
+useEffect(() => {
 
-    //production
-    // if (!email || !password) {
-    //   return;
-    // }
+  const getme = async () => {
+    const res = await axios.get(`${BACKEND}/me`);
 
+    if (res.status === 200) {
+      setLoading(false);
+    }
+
+  }
+  getme();
+}, []);
+
+  const loginWithOtp = async () => {
     try {
-      const response = await axios.post(`${BACKEND}/api/v1/auth/signin`, {
-        email,
-        password,
+
+      // if(!loading){
+      //   return
+      // }
+      const response = await axios.post(`${BACKEND}/api/v1/auth/otp-login`, {
+        phoneNumber,
+        otp: otp.join(""),
       });
 
-      console.log(response.data);
       if (response.data.success) {
-        await AsyncStorage.setItem(
-          "token",
-          JSON.stringify(response.data.token)
-        );
-        await AsyncStorage.setItem(
-          "userData",
-          JSON.stringify(response.data.data)
-        );
-        Toast.show(
-          "Login Successful",
-
-          {
-            type: "success",
-            placement: "top",
-            duration: 2000,
-          }
-        );
-
+        await AsyncStorage.setItem("token", JSON.stringify(response.data.token));
+        await AsyncStorage.setItem("userData", JSON.stringify(response.data.data));
+        Toast.show("Login Successful", {
+          type: "success",
+          placement: "top",
+          duration: 2000,
+        });
         router.push("/(tabs)");
-
-        // After storing the token, proceed with routing or any other operation
+      } else {
+        Toast.show(response.data.message, {
+          type: "danger",
+          placement: "top",
+          duration: 2000,
+        });
       }
     } catch (error) {
       console.log(error);
+      Toast.show("Login failed", {
+        type: "danger",
+        placement: "top",
+        duration: 2000,
+      });
     }
   };
 
+  const handleLogin = async () => {
+    if (!phoneNumber || !password) {
+      return Toast.show("Please fill all fields", {
+        type: "danger",
+        placement: "top",
+        duration: 2000,
+      });
+    }
+
+    try {
+      const response = await axios.post(`${BACKEND}/api/v1/auth/signin`, {
+        phoneNumber,
+        password,
+      });
+
+      if (response.data.success) {
+        await AsyncStorage.setItem("token", JSON.stringify(response.data.token));
+        await AsyncStorage.setItem("userData", JSON.stringify(response.data.data));
+        Toast.show("Login Successful", {
+          type: "success",
+          placement: "top",
+          duration: 2000,
+        });
+        router.push("/(tabs)");
+      } else {
+        Toast.show(response.data.message, {
+          type: "danger",
+          placement: "top",
+          duration: 2000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show("Login failed", {
+        type: "danger",
+        placement: "top",
+        duration: 2000,
+      });
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -145,10 +196,10 @@ const LoginScreen: React.FC = () => {
 
         <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, { paddingLeft: 40, marginBottom: -12 }]}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
+            style={[styles.input, { paddingLeft: 30, marginBottom: -12 }]}
+            placeholder="+91 79911684453"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
           />
 
           <Text
@@ -372,7 +423,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
 
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#A1A1A0",
   },
   visibleIcon: {
     position: "absolute",
