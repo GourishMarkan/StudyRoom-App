@@ -58,6 +58,11 @@ app.use((req, res, next) => {
   next();
 });
 
+
+app.get('/me', (req, res)=>{
+  res.status(200).json({message: "Hello from Problem Service"});
+})
+
 // If any request comes and route starts with /api, we map it to apiRouter
 app.use("/api", apiRouter);
 
